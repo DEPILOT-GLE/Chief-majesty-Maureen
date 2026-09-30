@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>For Her — A Special Dedication from DEPILOT</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&family=Dancing+Script:wght@400;700&display=swap');
+
+    :root { --rose:#e8637a; --gold:#d4a843; --deep:#0d0010; }
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html{ scroll-behavior:smooth; }
+    body{ font-family:'Lato',sans-serif; background:var(--deep); color:#fff; overflow-x:hidden; }
+
+    #progress-bar{
+      position:fixed; top:0; left:0; height:3px; width:0%;
+      background:linear-gradient(90deg,var(--rose),var(--gold),var(--rose));
+      background-size:200% 100%;
+      animation:shimmerBar 2s linear infinite;
+      z-index:9999; transition:width 0.1s;
+    }
+    @keyframes shimmerBar{ 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+    #particles{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+    .particle{ position:absolute; border-radius:50%; opacity:0; animation:floatUp linear infinite; }
+    @keyframes floatUp{
+      0%  { transform:translateY(100vh) scale(0) rotate(0deg); opacity:0; }
+      10% { opacity:.9; }
+      90% { opacity:.3; }
+      100%{ transform:translateY(-10vh) scale(1.2) rotate(360deg); opacity:0; }
+    }
+
+    .hero{ position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; overflow:hidden; }
+    .hero-bg{
+      position:absolute; inset:0;
+      background-image:url('images/flower.jpg');
+      background-size:cover; background-position:center;
+      filter:brightness(.32) saturate(1.5);
+      animation:slowZoom 22s ease-in-out infinite alternate;
+    }
+    @keyframes slowZoom{ from{transform:scale(1.05)} to{transform:scale(1.2)} }
+    .hero-overlay{ position:absolute; inset:0; background:radial-gradient(ellipse at center,rgba(232,99,122,.18) 0%,rgba(13,0,16,.75) 70%); }
+    .hero-content{ position:relative; z-index:2; padding:2rem; max-width:820px; }
+
+    .pre-title{ font-family:'Dancing Script',cursive; font-size:clamp(1rem,3vw,1.4rem); color:var(--gold); letter-spacing:4px; opacity:0; animation:fadeDown 1.2s .3s forwards; }
+    .hero-title{
+      font-family:'Playfair Display',serif; font-size:clamp(2.2rem,7vw,5rem); font-weight:700; line-height:1.1;
+      background:linear-gradient(135deg,#fff 30%,var(--rose) 70%,var(--gold));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+      opacity:0; animation:fadeDown 1.2s .6s forwards;
+    }
+    .hero-sub{ font-family:'Dancing Script',cursive; font-size:clamp(1.1rem,3vw,1.8rem); color:rgba(255,255,255,.85); margin-top:1rem; opacity:0; animation:fadeDown 1.2s .9s forwards; }
+    .hero-intro{ margin-top:1.5rem; font-size:clamp(.9rem,2.5vw,1.1rem); color:rgba(255,255,255,.72); line-height:1.85; opacity:0; animation:fadeDown 1.2s 1.2s forwards; }
+    .scroll-hint{ margin-top:2.5rem; opacity:0; animation:fadeDown 1s 2s forwards; }
+    .scroll-hint span{ display:block; width:2px; height:55px; background:linear-gradient(to bottom,var(--rose),transparent); margin:0 auto; animation:pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse{ 0%,100%{opacity:1;transform:scaleY(1)} 50%{opacity:.3;transform:scaleY(.6)} }
+    @keyframes fadeDown{ from{opacity:0;transform:translateY(-24px)} to{opacity:1;transform:translateY(0)} }
+
+    nav{
+      position:sticky; top:0; z-index:100;
+      background:rgba(13,0,16,.93); backdrop-filter:blur(16px);
+      border-bottom:1px solid rgba(232,99,122,.25);
+      padding:.85rem 1.5rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem;
+    }
+    .nav-brand{ font-family:'Dancing Script',cursive; font-size:1.4rem; color:var(--rose); }
+    .nav-links{ display:flex; gap:1.2rem; flex-wrap:wrap; }
+    .nav-links a{ color:rgba(255,255,255,.65); text-decoration:none; font-size:.8rem; letter-spacing:1px; text-transform:uppercase; transition:color .3s; position:relative; }
+    .nav-links a::after{ content:''; position:absolute; bottom:-3px; left:0; right:100%; height:2px; background:var(--rose); transition:right .35s; }
+    .nav-links a:hover{ color:var(--rose); }
+    .nav-links a:hover::after{ right:0; }
+
+    section{ position:relative; z-index:1; padding:5rem 1.2rem; }
+    .section-title{
+      font-family:'Playfair Display',serif; font-size:clamp(1.7rem,5vw,3rem); text-align:center; margin-bottom:.5rem;
+      background:linear-gradient(135deg,var(--rose),var(--gold));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .section-divider{ width:70px; height:3px; background:linear-gradient(to right,var(--rose),var(--gold)); margin:.75rem auto 3rem; border-radius:2px; }
+
+    .anim{ opacity:0; transition:opacity .75s ease, transform .75s ease; }
+    .anim.fade-up   { transform:translateY(60px); }
+    .anim.fade-left { transform:translateX(-70px); }
+    .anim.fade-right{ transform:translateX(70px); }
+    .anim.zoom-in   { transform:scale(.85); }
+    .anim.flip-up   { transform:rotateX(25deg) translateY(40px); perspective:600px; }
+    .anim.show{ opacity:1; transform:none; }
+
+    .delay-1{ transition-delay:.1s; }
+    .delay-2{ transition-delay:.2s; }
+    .delay-3{ transition-delay:.3s; }
+    .delay-4{ transition-delay:.4s; }
+    .delay-5{ transition-delay:.5s; }
+    .delay-6{ transition-delay:.6s; }
+    .delay-7{ transition-delay:.7s; }
+
+    .img-side{ max-width:1050px; margin:0 auto 4rem; display:flex; flex-wrap:wrap; gap:2rem; align-items:center; }
+    .img-side .photo-wrap{ flex:1 1 260px; max-width:360px; position:relative; }
+    .img-side .photo-wrap img{ width:100%; border-radius:20px; box-shadow:0 20px 50px rgba(0,0,0,.55); cursor:pointer; display:block; transition:transform .4s,box-shadow .4s; }
+    .img-side .photo-wrap img:hover{ transform:scale(1.03); box-shadow:0 28px 60px rgba(232,99,122,.35); }
+    .img-side .photo-wrap::after{
+      content:''; position:absolute; inset:-3px; border-radius:23px;
+      background:linear-gradient(135deg,var(--rose),var(--gold),var(--rose));
+      background-size:400% 400%;
+      z-index:-1; opacity:0; transition:opacity .8s;
+      animation:borderShimmer 3s ease infinite;
+    }
+    .img-side .photo-wrap.show::after{ opacity:.6; }
+    @keyframes borderShimmer{ 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+
+    .img-side .words{ flex:1 1 260px; }
+    .img-side .words h3{ font-family:'Playfair Display',serif; font-size:clamp(1.3rem,3vw,1.9rem); color:var(--rose); margin-bottom:1rem; }
+    .img-side .words p{ line-height:1.9; color:rgba(255,255,255,.8); font-size:clamp(.9rem,2vw,1.05rem); }
+    .img-side.reverse{ flex-direction:row-reverse; }
+    @media(max-width:640px){ .img-side,.img-side.reverse{ flex-direction:column; } .img-side .photo-wrap{ max-width:100%; } }
+
+    .trait-bar-wrap{ margin-top:1.3rem; }
+    .trait-label{ display:flex; justify-content:space-between; font-size:.78rem; color:rgba(255,255,255,.55); margin-bottom:4px; }
+    .trait-bar{ height:4px; background:rgba(255,255,255,.1); border-radius:2px; overflow:hidden; }
+    .trait-fill{ height:100%; border-radius:2px; background:linear-gradient(to right,var(--rose),var(--gold)); width:0; transition:width 1.6s cubic-bezier(.4,0,.2,1); }
+
+    .gallery-wrap{ max-width:1100px; margin:0 auto; }
+    .gallery-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:1rem; }
+    .gallery-item{ position:relative; border-radius:16px; overflow:hidden; cursor:pointer; aspect-ratio:3/4; box-shadow:0 8px 28px rgba(0,0,0,.45); }
+    .gallery-item img{ width:100%; height:100%; object-fit:cover; transition:transform .6s; }
+    .gallery-item:hover img{ transform:scale(1.1); }
+    .gallery-caption{ position:absolute; inset:0; background:linear-gradient(to top,rgba(13,0,16,.95) 0%,rgba(13,0,16,.1) 55%,transparent 100%); display:flex; flex-direction:column; justify-content:flex-end; padding:1.2rem; opacity:0; transition:opacity .4s; }
+    .gallery-item:hover .gallery-caption{ opacity:1; }
+    .gallery-caption h3{ font-family:'Dancing Script',cursive; font-size:1.2rem; color:var(--rose); margin-bottom:.3rem; }
+    .gallery-caption p{ font-size:.8rem; color:rgba(255,255,255,.8); line-height:1.5; }
+
+    #lightbox{ position:fixed; inset:0; z-index:999; background:rgba(0,0,0,.93); display:none; align-items:center; justify-content:center; }
+    #lightbox img{ max-width:94vw; max-height:92vh; border-radius:14px; box-shadow:0 0 80px rgba(232,99,122,.3); }
+    .close-lb{ position:absolute; top:1.2rem; right:1.2rem; color:#fff; font-size:1.3rem; cursor:pointer; background:rgba(232,99,122,.4); border:none; border-radius:50%; width:42px; height:42px; display:flex; align-items:center; justify-content:center; transition:background .3s; }
+    .close-lb:hover{ background:var(--rose); }
+
+    .bible-card{
+      max-width:680px; margin:1.5rem auto;
+      background:linear-gradient(135deg,rgba(232,99,122,.07),rgba(212,168,67,.07));
+      border:1px solid rgba(212,168,67,.3); border-radius:20px; padding:2.2rem; text-align:center;
+      position:relative; overflow:hidden; transition:box-shadow .4s, border-color .4s;
+    }
+    .bible-card.show{ box-shadow:0 0 30px rgba(212,168,67,.15); border-color:rgba(212,168,67,.5); }
+    .bible-card::before{ content:'✝'; position:absolute; font-size:7rem; opacity:.04; top:50%; left:50%; transform:translate(-50%,-50%); }
+    .bible-text{ font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(.95rem,2.5vw,1.18rem); line-height:1.85; color:rgba(255,255,255,.9); }
+    .bible-ref{ margin-top:1rem; color:var(--gold); font-size:.88rem; letter-spacing:2px; }
+
+    .quote-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.4rem; max-width:1100px; margin:0 auto; }
+    .quote-card{ background:rgba(255,255,255,.04); border:1px solid rgba(232,99,122,.2); border-radius:16px; padding:2rem; position:relative; overflow:hidden; transition:transform .35s, border-color .35s, box-shadow .35s; }
+    .quote-card::before{ content:'\201C'; font-size:5.5rem; font-family:'Playfair Display',serif; position:absolute; top:-.8rem; left:.5rem; color:rgba(232,99,122,.12); line-height:1; }
+    .quote-card:hover{ transform:translateY(-6px); border-color:rgba(232,99,122,.5); box-shadow:0 16px 40px rgba(232,99,122,.15); }
+    .quote-text{ font-family:'Playfair Display',serif; font-style:italic; font-size:.98rem; line-height:1.75; color:rgba(255,255,255,.9); position:relative; z-index:1; }
+    .quote-meta{ margin-top:1rem; font-size:.78rem; color:var(--gold); letter-spacing:1px; text-transform:uppercase; }
+
+    .rhetoric-wrap{ max-width:780px; margin:0 auto; }
+    .rhetoric-item{ padding:1.4rem 1.8rem; margin-bottom:1.1rem; background:rgba(255,255,255,.03); border-left:3px solid var(--rose); border-radius:0 12px 12px 0; font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(.95rem,2.5vw,1.12rem); color:rgba(255,255,255,.85); line-height:1.75; transition:transform .3s, background .3s, box-shadow .3s; }
+    .rhetoric-item:hover{ transform:translateX(8px); background:rgba(232,99,122,.07); box-shadow:inset 4px 0 0 var(--gold); }
+
+    .dedication-wrap{ max-width:800px; margin:0 auto; text-align:center; }
+    .dedication-text{ font-size:clamp(.95rem,2.5vw,1.12rem); line-height:2.1; color:rgba(255,255,255,.85); }
+    .dedication-text strong{ color:var(--rose); }
+
+    .goodnight-section{ background:linear-gradient(180deg,var(--deep) 0%,#1a0a2e 40%,var(--deep) 100%); text-align:center; padding:6rem 1.5rem; position:relative; overflow:hidden; }
+    .goodnight-section::before{ content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 80%,rgba(232,99,122,.15),transparent 60%); }
+    .moon{ font-size:5rem; animation:moonGlow 3s ease-in-out infinite; display:block; }
+    @keyframes moonGlow{ 0%,100%{filter:drop-shadow(0 0 10px rgba(212,168,67,.5))} 50%{filter:drop-shadow(0 0 35px rgba(212,168,67,1))} }
+    .goodnight-title{ font-family:'Dancing Script',cursive; font-size:clamp(2.4rem,7vw,5rem); color:var(--gold); margin:1rem 0; animation:floatTitle 4s ease-in-out infinite; }
+    @keyframes floatTitle{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    .goodnight-text{ max-width:680px; margin:1.5rem auto; font-size:clamp(.95rem,2.5vw,1.12rem); line-height:2.1; color:rgba(255,255,255,.8); }
+    .signature{ font-family:'Dancing Script',cursive; font-size:clamp(1.5rem,4vw,2.5rem); color:var(--rose); margin-top:2rem; }
+    .stars-row{ font-size:1.4rem; letter-spacing:.5rem; margin:1rem 0; animation:twinkle 2s ease-in-out infinite; }
+    @keyframes twinkle{ 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    footer{ text-align:center; padding:2rem; color:rgba(255,255,255,.3); font-size:.78rem; border-top:1px solid rgba(255,255,255,.05); }
+
+    .heart-float{ position:fixed; pointer-events:none; font-size:1.4rem; animation:heartRise ease-in forwards; z-index:9999; }
+    @keyframes heartRise{ 0%{transform:translateY(0) scale(1) rotate(0deg);opacity:1} 100%{transform:translateY(-75vh) scale(.4) rotate(25deg);opacity:0} }
+    .ripple{ position:fixed; border-radius:50%; pointer-events:none; z-index:9998; background:radial-gradient(circle,rgba(232,99,122,.35),transparent 70%); animation:rippleOut .6s ease-out forwards; }
+    @keyframes rippleOut{ from{width:0;height:0;opacity:1;transform:translate(-50%,-50%)} to{width:120px;height:120px;opacity:0;transform:translate(-50%,-50%)} }
+  </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div id="particles"></div>
+
+<div id="lightbox" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.93);align-items:center;justify-content:center;">
+  <button class="close-lb" onclick="closeLightbox()">✕</button>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="pre-title">✦ A Special Dedication from DEPILOT ✦</p>
+    <h1 class="hero-title">To the Woman Who<br>Made Silence<br>Speak Again</h1>
+    <p class="hero-sub">Some people don't just enter your life — they rearrange it.</p>
+    <p class="hero-intro">You know that feeling when you're scrolling through a thousand faces and suddenly — there is one that makes you stop? Not because of what she posted, but because something in your spirit just whispered <em>"pay attention to this one."</em> Yeah. That's how this started. And somehow — beautifully, unexpectedly — here we are. 🌸</p>
+    <div class="scroll-hint"><span></span></div>
+  </div>
+</section>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-brand">💐 From DEPILOT, With Love</span>
+  <div class="nav-links">
+    <a href="#about">About Her</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#verses">Scripture</a>
+    <a href="#quotes">Wisdom</a>
+    <a href="#rhetoric">Real Talk</a>
+    <a href="#dedication">Dedication</a>
+    <a href="#goodnight">Goodnight</a>
+  </div>
+</nav>
+
+<!-- ABOUT HER -->
+<section id="about" style="background:linear-gradient(180deg,var(--deep),#120018);">
+  <h2 class="section-title anim fade-up">She Is Something Else Entirely</h2>
+  <div class="section-divider anim fade-up delay-1"></div>
+
+  <div class="img-side">
+    <div class="photo-wrap anim fade-left"><img src="images/photo1.jpg" alt="" onclick="openLightbox(this.src)"></div>
+    <div class="words anim fade-right delay-2">
+      <h3>You Walk in Your Own Light 🌸</h3>
+      <p>There is something about the way you carry yourself that does not ask for permission. Not loud. Not trying. Just — present. And somehow your presence fills every room, every frame, every moment you step into.</p>
+      <p style="margin-top:1rem;">You have walked through storms that would have broken most people. And yet here you are — whole, warm, and still glowing. That is not coincidence. That is what a praying woman looks like from the outside. 🙏</p>
+      <div class="trait-bar-wrap">
+        <div class="trait-label"><span>Elegance</span><span>∞</span></div>
+        <div class="trait-bar"><div class="trait-fill" data-width="97%"></div></div>
+        <div class="trait-label" style="margin-top:8px"><span>Energy</span><span>∞</span></div>
+        <div class="trait-bar"><div class="trait-fill" data-width="100%"></div></div>
+        <div class="trait-label" style="margin-top:8px"><span>Heart</span><span>Limitless</span></div>
+        <div class="trait-bar"><div class="trait-fill" data-width="100%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="img-side reverse">
+    <div class="photo-wrap anim fade-right"><img src="images/photo2.jpg" alt="" onclick="openLightbox(this.src)"></div>
+    <div class="words anim fade-left delay-2">
+      <h3>Grace Is Your Default Setting 🌿</h3>
+      <p>There are women who are beautiful. There are women who are graceful. And then there are rare ones — like you — who carry both without even thinking about it. Like it is simply who you are, not something you put on.</p>
+      <p style="margin-top:1rem;">That smile of yours. That quiet confidence that says "I know who I am and I am at peace with it." Do you realise how rare that actually is? Most people spend a lifetime chasing what you already carry naturally.</p>
+      <p style="margin-top:1rem;">This is what God's favour on a woman looks like — not perfect, but deeply purposeful. Every bit of your story shows it. 💛</p>
+    </div>
+  </div>
+
+  <div class="img-side">
+    <div class="photo-wrap anim fade-left"><img src="images/photo3.jpg" alt="" onclick="openLightbox(this.src)"></div>
+    <div class="words anim fade-right delay-2">
+      <h3>Halfway Seen, Fully Felt 🌊</h3>
+      <p>You are perfectly comfortable being <em>halfway seen.</em> You do not need to give everyone everything. You decide what you reveal — and even that small fraction is enough to completely captivate the right people.</p>
+      <p style="margin-top:1rem;">Whatever the world throws at you, you do not break. You observe it. You process it. You stand. That is not stubbornness — that is the kind of inner stillness only God can build inside a person. And you have it. 🏔️</p>
+    </div>
+  </div>
+
+  <div class="img-side reverse">
+    <div class="photo-wrap anim fade-right"><img src="images/photo4.jpg" alt="" onclick="openLightbox(this.src)"></div>
+    <div class="words anim fade-left delay-2">
+      <h3>Even Your Quiet Moments Are Beautiful 🤍</h3>
+      <p>Do you ever stop and wonder — <em>who even notices me when I am just being me?</em> Not performing. Not trying. Just existing. Breathing. Thinking your thoughts.</p>
+      <p style="margin-top:1rem;">I do. I notice you in the ordinary moments too, not just the polished ones. And honestly — <em>those are the most beautiful versions of you.</em> The unguarded, real, unhurried you. 💙</p>
+      <p style="margin-top:1rem;">You do not have to be "on" all the time. Your resting energy is already extraordinary.</p>
+    </div>
+  </div>
+
+  <div class="img-side">
+    <div class="photo-wrap anim fade-left"><img src="images/photo5.jpg" alt="" onclick="openLightbox(this.src)"></div>
+    <div class="words anim fade-right delay-2">
+      <h3>You Are Always Thinking 💭</h3>
+      <p>That look you carry sometimes — eyes forward, mind somewhere the camera cannot reach. You are mid-thought, computing something the rest of us will only understand later when it becomes reality.</p>
+      <p style="margin-top:1rem;">You do not just show up. You <em>think.</em> You plan. You care deeply about things that actually matter. And that depth — that quiet seriousness sitting right behind all your warmth — is one of the most magnetic things about you. 😏</p>
+      <p style="margin-top:1rem;">Genius does not always announce itself. Sometimes it just sits quietly and waits for the right moment. That is you.</p>
+    </div>
+  </div>
+
+  <div class="img-side reverse">
+    <div class="photo-wrap anim fade-right"><img src="images/photo6.jpg" alt="" onclick="openLightbox(this.src)"></div>
+    <div class="words anim fade-left delay-2">
+      <h3>Even When It's Just You 🪞</h3>
+      <p>Even when you are the one holding the camera — even when you are just capturing yourself in a quiet moment — there is something in your eyes searching for more than just a good picture. There is a whole world sitting behind that gaze.</p>
+      <p style="margin-top:1rem;">I see the version of you that sometimes just wants someone to sit with you and ask — "how are you, really?" Not the composed answer. The honest one. That part of you is just as worthy. She is completely safe here. 💙</p>
+    </div>
+  </div>
+
+  <div class="img-side">
+    <div class="photo-wrap anim fade-left"><img src="images/photo7.jpg" alt="" onclick="openLightbox(this.src)"></div>
+    <div class="words anim fade-right delay-2">
+      <h3>Victory Is Your Name 🏆</h3>
+      <p>You chose to pour your energy into something that most people would not have the patience or the heart for. You show up every single day — not because it is always easy, but because you genuinely believe in what you are doing.</p>
+      <p style="margin-top:1rem;">That is not just a career. That is a calling. And when you walk in your calling, you carry an energy around you that cannot be faked or manufactured. People feel it the moment you enter a space. <em>That is you.</em> 🌟</p>
+      <p style="margin-top:1rem;">God does not call you to something without equipping you to finish it beautifully. Trust that.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" style="background:var(--deep);">
+  <h2 class="section-title anim fade-up">Memory Gallery 📸</h2>
+  <div class="section-divider anim fade-up delay-1"></div>
+  <p class="anim fade-up delay-2" style="text-align:center;color:rgba(255,255,255,.55);margin-bottom:2.5rem;max-width:600px;margin-left:auto;margin-right:auto;">They say a picture is worth a thousand words. These are worth a thousand prayers and a million smiles. Tap any photo to view it fully. ✨</p>
+  <div class="gallery-wrap">
+    <div class="gallery-grid">
+      <div class="gallery-item anim zoom-in delay-1" onclick="openLightbox('images/photo1.jpg')"><img src="images/photo1.jpg" alt=""><div class="gallery-caption"><h3>Royalty 👑</h3><p>"A queen doesn't need a crown. Her presence is enough."</p></div></div>
+      <div class="gallery-item anim zoom-in delay-2" onclick="openLightbox('images/photo2.jpg')"><img src="images/photo2.jpg" alt=""><div class="gallery-caption"><h3>Pure Grace 🌿</h3><p>"Creation rearranged itself just for her."</p></div></div>
+      <div class="gallery-item anim zoom-in delay-3" onclick="openLightbox('images/photo3.jpg')"><img src="images/photo3.jpg" alt=""><div class="gallery-caption"><h3>She Stands 🌊</h3><p>"The river rushes but she is the rock it breaks around."</p></div></div>
+      <div class="gallery-item anim zoom-in delay-4" onclick="openLightbox('images/photo4.jpg')"><img src="images/photo4.jpg" alt=""><div class="gallery-caption"><h3>Unfiltered 🤍</h3><p>"Her ordinary is someone else's extraordinary."</p></div></div>
+      <div class="gallery-item anim zoom-in delay-5" onclick="openLightbox('images/photo5.jpg')"><img src="images/photo5.jpg" alt=""><div class="gallery-caption"><h3>Deep Thinker 💭</h3><p>"Thinking thoughts the world isn't ready for. Watch her."</p></div></div>
+      <div class="gallery-item anim zoom-in delay-6" onclick="openLightbox('images/photo6.jpg')"><img src="images/photo6.jpg" alt=""><div class="gallery-caption"><h3>Just Her 🪞</h3><p>"A whole world lives behind that gaze."</p></div></div>
+      <div class="gallery-item anim zoom-in delay-7" onclick="openLightbox('images/photo7.jpg')"><img src="images/photo7.jpg" alt=""><div class="gallery-caption"><h3>The Calling 🌟</h3><p>"She didn't just teach a class. She changed a generation."</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCRIPTURE -->
+<section id="verses" style="background:linear-gradient(180deg,var(--deep),#130020);">
+  <h2 class="section-title anim fade-up">Words from Above 🕊️</h2>
+  <div class="section-divider anim fade-up delay-1"></div>
+  <div class="bible-card anim flip-up delay-1"><p class="bible-text">"She is clothed with strength and dignity, and she laughs without fear of the future."</p><p class="bible-ref">— Proverbs 31:25</p></div>
+  <div class="bible-card anim flip-up delay-2"><p class="bible-text">"For I know the plans I have for you, declares the Lord — plans to prosper you and not to harm you, plans to give you hope and a future."</p><p class="bible-ref">— Jeremiah 29:11</p></div>
+  <div class="bible-card anim flip-up delay-3"><p class="bible-text">"The Lord your God is in your midst, a mighty one who will save; He will rejoice over you with gladness; He will quiet you by His love."</p><p class="bible-ref">— Zephaniah 3:17</p></div>
+  <div class="bible-card anim flip-up delay-4"><p class="bible-text">"Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to Him, and He will make your paths straight."</p><p class="bible-ref">— Proverbs 3:5–6</p></div>
+  <div class="bible-card anim flip-up delay-5"><p class="bible-text">"Train up a child in the way he should go; even when he is old he will not depart from it."</p><p class="bible-ref">— Proverbs 22:6</p><p style="margin-top:.8rem;font-size:.82rem;color:rgba(255,255,255,.4);font-style:italic;">For your son — may God's knowledge be the anchor of his entire life. 🙏</p></div>
+</section>
+
+<!-- QUOTES -->
+<section id="quotes" style="background:var(--deep);">
+  <h2 class="section-title anim fade-up">Life Through a Clear Lens 🔍</h2>
+  <div class="section-divider anim fade-up delay-1"></div>
+  <div class="quote-grid">
+    <div class="quote-card anim fade-up delay-1"><p class="quote-text">A tree that survives the dry season is not lucky — it simply learned to sink its roots deeper than the drought could reach.</p><p class="quote-meta">On Resilience</p></div>
+    <div class="quote-card anim fade-up delay-2"><p class="quote-text">You cannot pour into an ocean and call it a waste. Every good thing you give accumulates somewhere — and God keeps accurate records.</p><p class="quote-meta">On Giving</p></div>
+    <div class="quote-card anim fade-up delay-3"><p class="quote-text">The woman who knows herself does not need the world's validation. She is not a puzzle waiting to be solved — she is a finished painting that only certain eyes deserve to see.</p><p class="quote-meta">On Self Worth</p></div>
+    <div class="quote-card anim fade-up delay-4"><p class="quote-text">A candle loses nothing by lighting another candle. The teacher who lights young minds does not dim — she multiplies.</p><p class="quote-meta">On Teaching</p></div>
+    <div class="quote-card anim fade-up delay-5"><p class="quote-text">Stars don't compete with each other — they simply shine. And from down here on earth, every single one of them matters to someone looking up.</p><p class="quote-meta">On Purpose</p></div>
+    <div class="quote-card anim fade-up delay-6"><p class="quote-text">Faith is not the absence of storms. It is arriving at the shore every time — hair messy, heart whole — still believing the sea was worth crossing.</p><p class="quote-meta">On Faith</p></div>
+    <div class="quote-card anim fade-up delay-7"><p class="quote-text">Some friendships are not accidents. They are divine appointments disguised as scroll-throughs and mutual follows.</p><p class="quote-meta">On Connection</p></div>
+    <div class="quote-card anim fade-up delay-7"><p class="quote-text">The strongest version of you was not built in comfort. It was built in every moment you chose to get up when staying down felt easier.</p><p class="quote-meta">On Strength</p></div>
+  </div>
+</section>
+
+<!-- RHETORIC -->
+<section id="rhetoric" style="background:linear-gradient(180deg,var(--deep),#140022);">
+  <h2 class="section-title anim fade-up">Questions Only You Can Answer 💭</h2>
+  <div class="section-divider anim fade-up delay-1"></div>
+  <div class="rhetoric-wrap">
+    <div class="rhetoric-item anim fade-left delay-1">When the day ends and the room is quiet and it's just you and your thoughts — what is that one thing you wish someone would ask you about?</div>
+    <div class="rhetoric-item anim fade-left delay-2">Did you ever think — when you were scrolling past all the noise — that one person you ended up talking to would somehow know exactly what to say at exactly the right moment?</div>
+    <div class="rhetoric-item anim fade-left delay-3">Be honest. When you read something I write, do you ever stop mid-sentence and think <em>"wait — how did he know that?"</em> 😏</div>
+    <div class="rhetoric-item anim fade-left delay-4">What does it feel like to be the one everyone leans on, when somewhere deep inside there is a version of you that still wants someone to lean on too?</div>
+    <div class="rhetoric-item anim fade-left delay-5">Have you ever wondered why certain people appear in your life at the exact season you needed them — not a year before, not a year after — but right then?</div>
+    <div class="rhetoric-item anim fade-left delay-6">If I asked you to describe me in three words right now — I dare you — would the third word surprise even you? 🤭</div>
+    <div class="rhetoric-item anim fade-left delay-7">Is there something you have been carrying so long that you have forgotten what it feels like to just put it down and let someone else hold it for a moment?</div>
+    <div class="rhetoric-item anim fade-left delay-7">And if — just if — one day you could sit across from me over coffee, what is the very first thing you would tell me that you have never typed out loud?</div>
+  </div>
+</section>
+
+<!-- DEDICATION -->
+<section id="dedication" style="background:var(--deep);">
+  <h2 class="section-title anim fade-up">From DEPILOT 💌</h2>
+  <div class="section-divider anim fade-up delay-1"></div>
+  <div class="dedication-wrap">
+    <div class="dedication-text">
+      <p class="anim fade-up delay-1">I owe you something I don't think I've said clearly enough — <strong>thank you.</strong></p><br>
+      <p class="anim fade-up delay-2">At a point when everything inside me felt broken — when I was fighting battles I didn't even know how to name — you showed up in conversation and just... <em>listened.</em> You didn't offer quick fixes. You didn't scroll past. You didn't judge. You spoke words that carried the weight of someone who genuinely knows what it means to trust God in the dark.</p><br>
+      <p class="anim fade-up delay-3">You restored in me something I was losing — the courage to keep praying, to keep trusting, to keep going even when everything felt still. <strong>That is not a small thing.</strong> That is one of the most sacred things one person can do for another.</p><br>
+      <p class="anim fade-up delay-4">I see how open you were. How brave that takes. And if I could — I would wrap that bravery in the biggest, warmest hug. Because I know: as much as the world sees a strong woman, there is an inner you that deserves to be <strong>seen, truly loved, and made to feel completely safe.</strong> That version of you is just as worthy. Don't let her disappear while she holds everything else together.</p><br>
+      <p class="anim fade-up delay-5">I pray for your son — that he grows into a man anchored in God. Responsible. Gentle. Strong. A man you can genuinely rest on. <strong>That prayer is sincere and it stands.</strong></p><br>
+      <p class="anim fade-up delay-6">I may not have gotten that date yet — and maybe that is God's way of saying the story is not finished — but I treasure every second of the position I hold in your life. Whatever that position is, I don't take it lightly. Not even a little.</p><br>
+      <p class="anim fade-up delay-7" style="color:var(--gold);font-family:'Playfair Display',serif;font-style:italic;font-size:1.2rem;">"People meet for reasons. I believe ours is God-led. And God-led things don't expire — they grow."</p><br>
+      <p class="anim fade-up delay-7">With every word of this — I mean it. With love, faith, and genuine respect —</p><br>
+      <p class="anim fade-up delay-7" style="font-family:'Dancing Script',cursive;font-size:2.4rem;color:var(--rose);">DEPILOT 💫</p>
+    </div>
+  </div>
+</section>
+
+<!-- GOODNIGHT -->
+<section class="goodnight-section" id="goodnight">
+  <div style="position:relative;z-index:2;">
+    <span class="moon anim zoom-in">🌙</span>
+    <h2 class="goodnight-title anim fade-up delay-1">Goodnight, Beautiful</h2>
+    <div class="stars-row anim fade-up delay-2">✨ ⭐ 🌟 ⭐ ✨</div>
+    <div class="goodnight-text">
+      <p class="anim fade-up delay-2">As this day closes its eyes and the world goes quiet, I want you to do something important — let yourself rest. Not just your body. Your mind. Your heart. All of it. Let it breathe.</p><br>
+      <p class="anim fade-up delay-3">Close your eyes knowing this: <strong style="color:var(--gold);">you are not carrying this life alone.</strong> There are people praying for you right now that you may never even know. There are plans being written for you in places you cannot see yet. And there is a God who does not sleep — which means He is watching over you even now.</p><br>
+      <p class="anim fade-up delay-4">Wake up tomorrow morning and before the noise of the world even reaches you — take one breath and remember: <em>I am seen. I am cared for. I have a purpose today. And God has already gone ahead of me.</em></p><br>
+      <p class="anim fade-up delay-5">Your son needs to see you shine. Your students need your light. This specific season needs exactly who you are. <strong style="color:var(--rose);">Do not shrink. Do not quit. Do not settle for anything less than what your prayers declared over your own life.</strong></p><br>
+      <p class="anim fade-up delay-6">Dream beautifully tonight. 🌸<br>Tomorrow holds something good — even if you cannot see it yet.<br>God's got you. Every single piece of you.</p>
+    </div>
+    <div class="stars-row anim fade-up delay-7" style="margin-top:2rem;">🌸 💫 🌙 💫 🌸</div>
+    <p class="signature anim fade-up delay-7">With all of this — DEPILOT 🕊️</p>
+    <p class="anim fade-up delay-7" style="margin-top:1rem;color:rgba(255,255,255,.28);font-size:.82rem;font-style:italic;">A special dedication, created with intention, care, and a whole lot of admiration.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Made with 💗 by DEPILOT &nbsp;·&nbsp; "Some connections are not coincidences — they are divine appointments."</p>
+  <p style="margin-top:.5rem;">© 2026 &nbsp;·&nbsp; For her eyes, always.</p>
+</footer>
+
+<script>
+  const bar = document.getElementById('progress-bar');
+  window.addEventListener('scroll', () => {
+    bar.style.width = (window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100) + '%';
+  }, { passive:true });
+
+  const pc = document.getElementById('particles');
+  const cols = ['#e8637a','#d4a843','#f9c5d1','#c084c8','rgba(255,255,255,.7)'];
+  for (let i=0;i<55;i++){
+    const p=document.createElement('div'); p.className='particle';
+    const s=Math.random()*7+2;
+    p.style.cssText=`width:${s}px;height:${s}px;background:${cols[Math.floor(Math.random()*cols.length)]};left:${Math.random()*100}%;animation-duration:${Math.random()*14+8}s;animation-delay:${Math.random()*12}s;`;
+    pc.appendChild(p);
+  }
+
+  function openLightbox(src){ document.getElementById('lb-img').src=src; document.getElementById('lightbox').style.display='flex'; document.body.style.overflow='hidden'; }
+  function closeLightbox(){ document.getElementById('lightbox').style.display='none'; document.body.style.overflow=''; }
+  document.getElementById('lightbox').addEventListener('click',e=>{ if(e.target===document.getElementById('lightbox')) closeLightbox(); });
+
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(!entry.isIntersecting) return;
+      entry.target.classList.add('show');
+      entry.target.querySelectorAll('.trait-fill').forEach(b=>b.style.width=b.dataset.width);
+      io.unobserve(entry.target);
+    });
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.anim,.photo-wrap').forEach(el=>{ el.querySelectorAll('.trait-fill').forEach(b=>b.style.width='0%'); io.observe(el); });
+
+  const emojis=['💗','💕','🌸','✨','💫','🌹','💖','🦋','🌼'];
+  document.addEventListener('click',e=>{
+    if(e.target.closest('#lightbox')) return;
+    const r=document.createElement('div'); r.className='ripple'; r.style.left=e.clientX+'px'; r.style.top=e.clientY+'px'; document.body.appendChild(r); setTimeout(()=>r.remove(),700);
+    for(let i=0;i<4;i++){
+      const h=document.createElement('div'); h.className='heart-float';
+      h.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+      h.style.left=(e.clientX+(Math.random()-.5)*50)+'px'; h.style.top=(e.clientY+(Math.random()-.5)*25)+'px';
+      h.style.animationDuration=(Math.random()*2.5+2.5)+'s'; document.body.appendChild(h); setTimeout(()=>h.remove(),5500);
+    }
+  });
+
+  document.querySelectorAll('.gallery-item').forEach(item=>{
+    item.addEventListener('touchstart',()=>{ item.querySelector('.gallery-caption').style.opacity='1'; },{passive:true});
+    item.addEventListener('touchend',()=>{ setTimeout(()=>{ item.querySelector('.gallery-caption').style.opacity=''; },1800); },{passive:true});
+  });
+</script>
+</body>
+</html>
